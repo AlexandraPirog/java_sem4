@@ -1,0 +1,115 @@
+//Task_3
+import java.util.ArrayDeque;
+import java.util.Arrays;
+import java.util.Deque;
+
+public class Task_3 {
+
+// Дан Deque состоящий из последовательности цифр.
+// Необходимо проверить, что последовательность цифр является палиндромом
+public static void main(String[] args) {
+    Deque<Integer> deque = new ArrayDeque<>(Arrays.asList(1,2,3,4,5,6));
+    String answer = checkOn(deque);
+    System.out.println("список: ", deque , "является паллиндромом: " + answer);
+}
+
+public boolean checkOn(Deque<Integer> deque){
+    for (int i = 0; i< deque.length/2; i++) {
+        while (deque.charAt(i) < deque.charAt(deque.length - i - 1)) {
+            if (deque.charAt(i) == deque.charAt(deque.length - i - 1)) {
+                return true;
+            }
+            else return false;
+        }
+    }
+}
+}
+
+//Task_4
+
+import java.util.ArrayDeque;
+import java.util.Arrays;
+import java.util.Deque;
+import java.util.List;
+public class Task_4 {
+
+    //Даны два Deque представляющие два неотрицательных целых числа. Цифры хранятся в обратном порядке,
+    // и каждый из их узлов содержит одну цифру.
+    // Сложите два числа и верните сумму в виде связанного списка.
+    public static List <Integer> sum(Deque<Integer> d1,Deque<Integer> d2){
+        List<Integer> result = new ArrayList<>();
+        int temp =0;
+        int n = d1.size();
+        for (int index = 0; index < n; index++) {
+            int n1 = d1.removeFirst();
+            int n2 = d2.removeFirst();
+            int sum = n1 + n2;
+            if(sum >= 10){
+                result.add(sum % 10+ temp++);
+            }
+            else{
+                result.add(sum+temp);
+                temp = 0;
+            }
+        }
+        result.add(temp);
+        return result;
+    }
+    public static void main(String[] args) {
+        Deque<Integer> d1 = new ArrayDeque<>(Arrays.asList(1,2,3));
+        Deque<Integer> d2 = new ArrayDeque<>(Arrays.asList(5,4,7));
+        System.out.print(sum(d1,d2));
+    }
+}
+
+//task_5
+
+import java.util.LinkedList;
+import java.util.ArrayDeque;
+import java.util.Arrays;
+import java.util.Deque;
+import java.util.HashMap;
+import java.util.Map;
+
+public class Task_5 {
+
+    //Дана строка содержащая только символы '(', ')', '{', '}', '[' и ']', определите,
+    // является ли входная строка логически правильной.
+    // Входная строка логически правильная, если:
+    // 1) Открытые скобки должны быть закрыты скобками того же типа.
+    // 2) Открытые скобки должны быть закрыты в правильном порядке. Каждая закрывающая скобка имеет соответствующую
+    // открытую скобку того же типа.
+    // ()[] = true
+    // () = true
+    // {[()]} = true
+    // ()() = true
+    // )()( = false
+    
+    public static void main(String[] args) {
+       validate(bracketString: "({})[]");
+       validate(bracketString: "({}[]");
+       validate(bracketString: "");
+       validate(bracketString: "({})[]]");
+
+    }
+    
+    public static boolean validate(String bracketString){
+        java.util.Map<Character, Character> brackets = new HashMap<>();
+        brackets.put( ')', '(');
+        brackets.put( '}', '{');
+        brackets.put( ']', '[');
+        
+        Deque<Character> stack = new LinkedList<>();
+        for(Character c: bracketString.toCharArray()){
+            if (brackets.containsValue(c)){
+                stack.push(c);
+                else if (brackets.containsKey(c)) {
+                    if (stack.isEmpty() || stack.pop() != brackets.get(c)){
+                        return false;
+                    }
+                }
+            }
+        }
+        return stack.isEmpty();
+    }
+    }
